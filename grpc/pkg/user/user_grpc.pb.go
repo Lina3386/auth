@@ -19,215 +19,215 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	User_API_Create_FullMethodName = "/proto.User_API/Create"
-	User_API_Get_FullMethodName    = "/proto.User_API/Get"
-	User_API_Update_FullMethodName = "/proto.User_API/Update"
-	User_API_Delete_FullMethodName = "/proto.User_API/Delete"
+	UserAPI_Create_FullMethodName = "/proto.UserAPI/Create"
+	UserAPI_Get_FullMethodName    = "/proto.UserAPI/Get"
+	UserAPI_Update_FullMethodName = "/proto.UserAPI/Update"
+	UserAPI_Delete_FullMethodName = "/proto.UserAPI/Delete"
 )
 
-// User_APIClient is the client API for User_API service.
+// UserAPIClient is the client API for UserAPI service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type User_APIClient interface {
+type UserAPIClient interface {
 	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
 	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
 	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
 	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
 }
 
-type user_APIClient struct {
+type userAPIClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewUser_APIClient(cc grpc.ClientConnInterface) User_APIClient {
-	return &user_APIClient{cc}
+func NewUserAPIClient(cc grpc.ClientConnInterface) UserAPIClient {
+	return &userAPIClient{cc}
 }
 
-func (c *user_APIClient) Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error) {
+func (c *userAPIClient) Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CreateResponse)
-	err := c.cc.Invoke(ctx, User_API_Create_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, UserAPI_Create_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *user_APIClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error) {
+func (c *userAPIClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetResponse)
-	err := c.cc.Invoke(ctx, User_API_Get_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, UserAPI_Get_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *user_APIClient) Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error) {
+func (c *userAPIClient) Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(UpdateResponse)
-	err := c.cc.Invoke(ctx, User_API_Update_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, UserAPI_Update_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *user_APIClient) Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error) {
+func (c *userAPIClient) Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(DeleteResponse)
-	err := c.cc.Invoke(ctx, User_API_Delete_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, UserAPI_Delete_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// User_APIServer is the server API for User_API service.
-// All implementations must embed UnimplementedUser_APIServer
+// UserAPIServer is the server API for UserAPI service.
+// All implementations must embed UnimplementedUserAPIServer
 // for forward compatibility.
-type User_APIServer interface {
+type UserAPIServer interface {
 	Create(context.Context, *CreateRequest) (*CreateResponse, error)
 	Get(context.Context, *GetRequest) (*GetResponse, error)
 	Update(context.Context, *UpdateRequest) (*UpdateResponse, error)
 	Delete(context.Context, *DeleteRequest) (*DeleteResponse, error)
-	mustEmbedUnimplementedUser_APIServer()
+	mustEmbedUnimplementedUserAPIServer()
 }
 
-// UnimplementedUser_APIServer must be embedded to have
+// UnimplementedUserAPIServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedUser_APIServer struct{}
+type UnimplementedUserAPIServer struct{}
 
-func (UnimplementedUser_APIServer) Create(context.Context, *CreateRequest) (*CreateResponse, error) {
+func (UnimplementedUserAPIServer) Create(context.Context, *CreateRequest) (*CreateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
-func (UnimplementedUser_APIServer) Get(context.Context, *GetRequest) (*GetResponse, error) {
+func (UnimplementedUserAPIServer) Get(context.Context, *GetRequest) (*GetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
 }
-func (UnimplementedUser_APIServer) Update(context.Context, *UpdateRequest) (*UpdateResponse, error) {
+func (UnimplementedUserAPIServer) Update(context.Context, *UpdateRequest) (*UpdateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
-func (UnimplementedUser_APIServer) Delete(context.Context, *DeleteRequest) (*DeleteResponse, error) {
+func (UnimplementedUserAPIServer) Delete(context.Context, *DeleteRequest) (*DeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
-func (UnimplementedUser_APIServer) mustEmbedUnimplementedUser_APIServer() {}
-func (UnimplementedUser_APIServer) testEmbeddedByValue()                  {}
+func (UnimplementedUserAPIServer) mustEmbedUnimplementedUserAPIServer() {}
+func (UnimplementedUserAPIServer) testEmbeddedByValue()                 {}
 
-// UnsafeUser_APIServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to User_APIServer will
+// UnsafeUserAPIServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to UserAPIServer will
 // result in compilation errors.
-type UnsafeUser_APIServer interface {
-	mustEmbedUnimplementedUser_APIServer()
+type UnsafeUserAPIServer interface {
+	mustEmbedUnimplementedUserAPIServer()
 }
 
-func RegisterUser_APIServer(s grpc.ServiceRegistrar, srv User_APIServer) {
-	// If the following call pancis, it indicates UnimplementedUser_APIServer was
+func RegisterUserAPIServer(s grpc.ServiceRegistrar, srv UserAPIServer) {
+	// If the following call pancis, it indicates UnimplementedUserAPIServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&User_API_ServiceDesc, srv)
+	s.RegisterService(&UserAPI_ServiceDesc, srv)
 }
 
-func _User_API_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _UserAPI_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(User_APIServer).Create(ctx, in)
+		return srv.(UserAPIServer).Create(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: User_API_Create_FullMethodName,
+		FullMethod: UserAPI_Create_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(User_APIServer).Create(ctx, req.(*CreateRequest))
+		return srv.(UserAPIServer).Create(ctx, req.(*CreateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_API_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _UserAPI_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(User_APIServer).Get(ctx, in)
+		return srv.(UserAPIServer).Get(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: User_API_Get_FullMethodName,
+		FullMethod: UserAPI_Get_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(User_APIServer).Get(ctx, req.(*GetRequest))
+		return srv.(UserAPIServer).Get(ctx, req.(*GetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_API_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _UserAPI_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(User_APIServer).Update(ctx, in)
+		return srv.(UserAPIServer).Update(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: User_API_Update_FullMethodName,
+		FullMethod: UserAPI_Update_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(User_APIServer).Update(ctx, req.(*UpdateRequest))
+		return srv.(UserAPIServer).Update(ctx, req.(*UpdateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_API_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _UserAPI_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(User_APIServer).Delete(ctx, in)
+		return srv.(UserAPIServer).Delete(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: User_API_Delete_FullMethodName,
+		FullMethod: UserAPI_Delete_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(User_APIServer).Delete(ctx, req.(*DeleteRequest))
+		return srv.(UserAPIServer).Delete(ctx, req.(*DeleteRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// User_API_ServiceDesc is the grpc.ServiceDesc for User_API service.
+// UserAPI_ServiceDesc is the grpc.ServiceDesc for UserAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var User_API_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "proto.User_API",
-	HandlerType: (*User_APIServer)(nil),
+var UserAPI_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "proto.UserAPI",
+	HandlerType: (*UserAPIServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "Create",
-			Handler:    _User_API_Create_Handler,
+			Handler:    _UserAPI_Create_Handler,
 		},
 		{
 			MethodName: "Get",
-			Handler:    _User_API_Get_Handler,
+			Handler:    _UserAPI_Get_Handler,
 		},
 		{
 			MethodName: "Update",
-			Handler:    _User_API_Update_Handler,
+			Handler:    _UserAPI_Update_Handler,
 		},
 		{
 			MethodName: "Delete",
-			Handler:    _User_API_Delete_Handler,
+			Handler:    _UserAPI_Delete_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

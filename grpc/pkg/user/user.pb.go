@@ -560,8 +560,8 @@ const file_user_proto_rawDesc = "" +
 	"\x04Role\x12\x14\n" +
 	"\x10ROLE_UNSPECIFIED\x10\x00\x12\b\n" +
 	"\x04USER\x10\x01\x12\t\n" +
-	"\x05ADMIN\x10\x022\xdd\x01\n" +
-	"\bUser_API\x125\n" +
+	"\x05ADMIN\x10\x022\xdc\x01\n" +
+	"\aUserAPI\x125\n" +
 	"\x06Create\x12\x14.proto.CreateRequest\x1a\x15.proto.CreateResponse\x12,\n" +
 	"\x03Get\x12\x11.proto.GetRequest\x1a\x12.proto.GetResponse\x125\n" +
 	"\x06Update\x12\x14.proto.UpdateRequest\x1a\x15.proto.UpdateResponse\x125\n" +
@@ -605,14 +605,14 @@ var file_user_proto_depIdxs = []int32{
 	0,  // 6: proto.UpdateRequest.role:type_name -> proto.Role
 	11, // 7: proto.UpdateResponse.empty:type_name -> google.protobuf.Empty
 	11, // 8: proto.DeleteResponse.empty:type_name -> google.protobuf.Empty
-	1,  // 9: proto.User_API.Create:input_type -> proto.CreateRequest
-	3,  // 10: proto.User_API.Get:input_type -> proto.GetRequest
-	5,  // 11: proto.User_API.Update:input_type -> proto.UpdateRequest
-	7,  // 12: proto.User_API.Delete:input_type -> proto.DeleteRequest
-	2,  // 13: proto.User_API.Create:output_type -> proto.CreateResponse
-	4,  // 14: proto.User_API.Get:output_type -> proto.GetResponse
-	6,  // 15: proto.User_API.Update:output_type -> proto.UpdateResponse
-	8,  // 16: proto.User_API.Delete:output_type -> proto.DeleteResponse
+	1,  // 9: proto.UserAPI.Create:input_type -> proto.CreateRequest
+	3,  // 10: proto.UserAPI.Get:input_type -> proto.GetRequest
+	5,  // 11: proto.UserAPI.Update:input_type -> proto.UpdateRequest
+	7,  // 12: proto.UserAPI.Delete:input_type -> proto.DeleteRequest
+	2,  // 13: proto.UserAPI.Create:output_type -> proto.CreateResponse
+	4,  // 14: proto.UserAPI.Get:output_type -> proto.GetResponse
+	6,  // 15: proto.UserAPI.Update:output_type -> proto.UpdateResponse
+	8,  // 16: proto.UserAPI.Delete:output_type -> proto.DeleteResponse
 	13, // [13:17] is the sub-list for method output_type
 	9,  // [9:13] is the sub-list for method input_type
 	9,  // [9:9] is the sub-list for extension type_name
