@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	desc "github.com/Lina3386/auth/grpc/pkg/user"
+	desc "github.com/Lina3386/auth/pkg/user"
 	"log"
 	"time"
 
@@ -42,19 +42,24 @@ func main() {
 	ctx, cancel = context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	UpReq := &desc.UpdateRequest{
-		Id:    CrResp.GetId(),
-		Name:  nil,
-		Email: nil,
-		Role:  desc.Role_ADMIN,
-	}
-
-	UpResp, err := client.Update(ctx, UpReq)
+	getResp, err := client.Get(ctx, &desc.GetRequest{Id: CrResp.GetId()})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Get: %v", err)
+	}
+	log.Printf("GetResponse: id=%d, name=%s, email=%s, role=%s", getResp.GetId(), getResp.GetName(), getResp.GetEmail(), getResp.GetRole())
+
+	ctx, cancel = context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+
+	UpResp, err := client.Update(ctx, &desc.UpdateRequest{
+		Id:   CrResp.GetId(),
+		Role: desc.Role_ADMIN,
+	})
+	if err != nil {
+		log.Fatal("Update: %v", err)
 	}
 
-	log.Printf("UpdateResponse: %d", UpResp.GetEmpty() != nil)
+	log.Printf("UpdateResponse: succes=%v", UpResp.GetEmpty() != nil)
 
 	ctx, cancel = context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
@@ -63,8 +68,8 @@ func main() {
 		Id: CrResp.GetId(),
 	})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Delete: %v", err)
 	}
 
-	log.Printf("DeleteResponse: %d\n", DelResp.GetEmpty())
+	log.Printf("DeleteResponse: %d\n", DelResp.GetEmpty() != nil)
 }

@@ -6,7 +6,7 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/wrappers.proto";
 
-option go_package = "https://github.com/Lina3386/auth/grpc/pkg/user;user";
+option go_package = "github.com/Lina3386/auth/pkg/user;user";
 
 service UserAPI {
   rpc Create(CreateRequest) returns (CreateResponse);

@@ -565,7 +565,7 @@ const file_user_proto_rawDesc = "" +
 	"\x06Create\x12\x14.proto.CreateRequest\x1a\x15.proto.CreateResponse\x12,\n" +
 	"\x03Get\x12\x11.proto.GetRequest\x1a\x12.proto.GetResponse\x125\n" +
 	"\x06Update\x12\x14.proto.UpdateRequest\x1a\x15.proto.UpdateResponse\x125\n" +
-	"\x06Delete\x12\x14.proto.DeleteRequest\x1a\x15.proto.DeleteResponseB5Z3https://github.com/Lina3386/auth/grpc/pkg/user;userb\x06proto3"
+	"\x06Delete\x12\x14.proto.DeleteRequest\x1a\x15.proto.DeleteResponseB(Z&github.com/Lina3386/auth/pkg/user;userb\x06proto3"
 
 var (
 	file_user_proto_rawDescOnce sync.Once
