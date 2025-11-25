@@ -4,33 +4,36 @@ import (
 	"context"
 	"crypto/sha256"
 	"fmt"
+	"github.com/Lina3386/auth/internal/client/db"
+	"github.com/Lina3386/auth/internal/repository"
+	desc "github.com/Lina3386/auth/pkg/user"
 	"time"
 
 	"github.com/Lina3386/auth/internal/model"
+	"github.com/Lina3386/auth/internal/repository/user/converter"
 	modelRepo "github.com/Lina3386/auth/internal/repository/user/model"
 	sq "github.com/Masterminds/squirrel"
-	"github.com/jackc/pgx/v4/pgxpool"
 )
 
 const (
 	tableName = "user"
 
-	idColumn         = "id"
-	nameColumn       = "name"
-	emailColumn      = "email"
-	passwordCollumun = "password"
-	roleColumn       = "role"
-	createdAtColumn  = "created_at"
-	updatedAtColumn  = "updated_at"
+	idColumn        = "id"
+	nameColumn      = "name"
+	emailColumn     = "email"
+	passwordColumn  = "password"
+	roleColumn      = "role"
+	createdAtColumn = "created_at"
+	updatedAtColumn = "updated_at"
 )
 
 type repo struct {
-	db *pgxpool.Pool
+	db db.Client // Клиент вместо *pgx.Pool
 }
 
-func (r *repo) Create(ctx context.Context, req *model.UserToCreate) (int64, error) {
+func (r repo) Create(ctx context.Context, req *model.UserToCreate) (int64, error) {
 	builder := sq.Insert(tableName).PlaceholderFormat(sq.Dollar).
-		Columns(nameColumn, emailColumn, createdAtColumn, updatedAtColumn).
+		Columns(nameColumn, emailColumn, passwordColumn, roleColumn).
 		Values(req.Name, req.Email, genPassHash(req.Password), req.Role).
 		Suffix("RETURNING id")
 
@@ -39,15 +42,21 @@ func (r *repo) Create(ctx context.Context, req *model.UserToCreate) (int64, erro
 		return 0, err
 	}
 
+	// Добавлено с db.Client
+	q := db.Query{
+		Name:     "user_repository.Create",
+		QueryRaw: query,
+	}
+
 	var id int64
-	err = r.db.QueryRow(ctx, query, args...).Scan(&id)
+	err = r.db.DB().QueryRowContext(ctx, q, args...).Scan(&id)
 	if err != nil {
 		return 0, err
 	}
 	return id, nil
 }
 
-func (r *repo) Get(ctx context.Context, req *model.UserToUpdate) (int64, error) {
+func (r repo) Get(ctx context.Context, id int64) (*model.User, error) {
 	builder := sq.Select(idColumn, nameColumn, emailColumn, roleColumn, createdAtColumn, updatedAtColumn).
 		PlaceholderFormat(sq.Dollar).
 		From(tableName).
@@ -55,11 +64,16 @@ func (r *repo) Get(ctx context.Context, req *model.UserToUpdate) (int64, error) 
 		Limit(1)
 	query, args, err := builder.ToSql()
 	if err != nil {
-		return 0, err
+		return nil, err
+	}
+
+	q := db.Query{
+		Name:     "user_repository.Get",
+		QueryRaw: query,
 	}
 
 	var user modelRepo.User
-	err = r.db.QueryRow(ctx, query, args...).Scan(&user.Id, &user.Name, &user.Email, &user.Role, &user.CreatedAt, &user.UpdatedAt)
+	err = r.db.DB().ScanOneContext(ctx, &user, q, args...) // Сканирует одну запись в user
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +81,7 @@ func (r *repo) Get(ctx context.Context, req *model.UserToUpdate) (int64, error) 
 	return converter.ToUserFromRepo(&user), nil
 }
 
-func (r *repo) Update(ctx context.Context, req *model.UserToUpdate) error {
+func (r repo) Update(ctx context.Context, req *model.UserToUpdate) error {
 	builder := sq.Update(tableName).
 		PlaceholderFormat(sq.Dollar).
 		Set(updatedAtColumn, time.Now()).
@@ -80,8 +94,8 @@ func (r *repo) Update(ctx context.Context, req *model.UserToUpdate) error {
 		builder = builder.Set(emailColumn, req.Email.Value)
 	}
 
-	if req.Role != nil {
-		builder = builder.Set(roleColumn, req.Role.Value)
+	if req.Role != desc.Role_ROLE_UNSPECIFIED {
+		builder = builder.Set(roleColumn, req.Role)
 	}
 
 	query, args, err := builder.ToSql()
@@ -89,27 +103,38 @@ func (r *repo) Update(ctx context.Context, req *model.UserToUpdate) error {
 		return err
 	}
 
-	_, err = r.db.Exec(ctx, query, args...)
+	q := db.Query{
+		Name:     "user_repository.Update",
+		QueryRaw: query,
+	}
+	_, err = r.db.DB().ExecContext(ctx, q, args...)
 	if err != nil {
 		return err
 	}
-
 	return nil
 }
 
-func (r *repo) Delete(ctx context.Context, id int64) error {
+func (r repo) Delete(ctx context.Context, id int64) error {
 	builder := sq.Delete(tableName).PlaceholderFormat(sq.Dollar).Where(sq.Eq{"id": id})
 	query, args, err := builder.ToSql()
 	if err != nil {
 		return err
 	}
 
-	_, err = r.db.Exec(ctx, query, args...)
+	q := db.Query{
+		Name:     "user_repository.Delete",
+		QueryRaw: query,
+	}
+
+	_, err = r.db.DB().ExecContext(ctx, q, args...)
 	if err != nil {
 		return err
 	}
-
 	return nil
+}
+
+func NewRepository(db db.Client) repository.UserRepository {
+	return &repo{db: db}
 }
 
 func genPassHash(pass string) string {
