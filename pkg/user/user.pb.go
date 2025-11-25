@@ -244,7 +244,7 @@ type GetResponse struct {
 	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
 	Role          Role                   `protobuf:"varint,4,opt,name=role,proto3,enum=proto.Role" json:"role,omitempty"`
 	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdateAt      *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=update_at,json=updateAt,proto3" json:"update_at,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -314,9 +314,9 @@ func (x *GetResponse) GetCreatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *GetResponse) GetUpdateAt() *timestamppb.Timestamp {
+func (x *GetResponse) GetUpdatedAt() *timestamppb.Timestamp {
 	if x != nil {
-		return x.UpdateAt
+		return x.UpdatedAt
 	}
 	return nil
 }
@@ -537,15 +537,16 @@ const file_user_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\"\x1c\n" +
 	"\n" +
 	"GetRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"\xdc\x01\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"\xde\x01\n" +
 	"\vGetResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
 	"\x05email\x18\x03 \x01(\tR\x05email\x12\x1f\n" +
 	"\x04role\x18\x04 \x01(\x0e2\v.proto.RoleR\x04role\x129\n" +
 	"\n" +
-	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x127\n" +
-	"\tupdate_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\bupdateAt\"\xa6\x01\n" +
+	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"\n" +
+	"updated_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"\xa6\x01\n" +
 	"\rUpdateRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x120\n" +
 	"\x04name\x18\x02 \x01(\v2\x1c.google.protobuf.StringValueR\x04name\x122\n" +
@@ -599,7 +600,7 @@ var file_user_proto_depIdxs = []int32{
 	0,  // 0: proto.CreateRequest.role:type_name -> proto.Role
 	0,  // 1: proto.GetResponse.role:type_name -> proto.Role
 	9,  // 2: proto.GetResponse.created_at:type_name -> google.protobuf.Timestamp
-	9,  // 3: proto.GetResponse.update_at:type_name -> google.protobuf.Timestamp
+	9,  // 3: proto.GetResponse.updated_at:type_name -> google.protobuf.Timestamp
 	10, // 4: proto.UpdateRequest.name:type_name -> google.protobuf.StringValue
 	10, // 5: proto.UpdateRequest.email:type_name -> google.protobuf.StringValue
 	0,  // 6: proto.UpdateRequest.role:type_name -> proto.Role

@@ -1,4 +1,4 @@
-package convector
+package converter
 
 import (
 	"github.com/Lina3386/auth/internal/model"

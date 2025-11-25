@@ -2,6 +2,8 @@ package model
 
 import (
 	"database/sql"
+	"time"
+
 	"github.com/Lina3386/auth/pkg/user"
 	"google.golang.org/protobuf/types/known/wrapperspb"
 )
@@ -11,7 +13,7 @@ type User struct {
 	Name      string
 	Email     string
 	Role      user.Role
-	CreatedAt string
+	CreatedAt time.Time
 	UpdatedAt sql.NullTime
 }
 
@@ -23,8 +25,8 @@ type UserToCreate struct {
 }
 
 type UserToUpdate struct {
-	Id       int64
-	Name     *wrapperspb.StringValue
-	Email    *wrapperspb.StringValue
-	Password *wrapperspb.StringValue
+	Id    int64
+	Name  *wrapperspb.StringValue
+	Email *wrapperspb.StringValue
+	Role  user.Role
 }
