@@ -1,13 +1,13 @@
-package repository
+package service
 
 import (
 	"context"
 	"github.com/Lina3386/auth/internal/model"
 )
 
-type UserRepository interface {
+type UserService interface {
 	Create(ctx context.Context, req *model.UserToCreate) (int64, error)
 	Get(ctx context.Context, id int64) (*model.User, error)
-	Update(ctx context.Context, req *model.UserToUpdate) error
 	Delete(ctx context.Context, id int64) error
+	Update(ctx context.Context, req *model.UserToUpdate) error
 }

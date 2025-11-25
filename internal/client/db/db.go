@@ -45,8 +45,8 @@ type NamedExecer interface {
 // QueryExecer - интерфейс для работы с обычными запросами - по сути обертка над pgx
 type QueryExecer interface {
 	ExecContext(ctx context.Context, q Query, args ...interface{}) (pgconn.CommandTag, error)
-	QueryContext(ctx context.Context, q Query, args ...interface{}) (*pgx.Rows, error)
-	QueryRowContext(ctx context.Context, q Query, args ...interface{}) *pgx.Row
+	QueryContext(ctx context.Context, q Query, args ...interface{}) (pgx.Rows, error)
+	QueryRowContext(ctx context.Context, q Query, args ...interface{}) pgx.Row
 }
 
 // Pinger - интерфейс для проверки соединения с БД - обертка над Ping()

@@ -9,6 +9,8 @@ require (
 	github.com/joho/godotenv v1.5.1
 	google.golang.org/grpc v1.75.1
 	google.golang.org/protobuf v1.36.10
+	github.com/Masterminds/squirrel v1.5.4
+    github.com/georgysavva/scany v1.2.3
 )
 
 require (
