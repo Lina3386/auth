@@ -13,6 +13,8 @@ service UserAPI {
   rpc Get(GetRequest) returns (GetResponse);
   rpc Update(UpdateRequest) returns (UpdateResponse);
   rpc Delete(DeleteRequest) returns (DeleteResponse);
+  rpc RegisterTelegramUser(RegisterTelegramUserRequest) returns (RegisterTelegramUserResponse);
+  rpc VerifyToken(VerifyTokenRequest) returns (VerifyTokenResponse);
 }
 
 enum Role {
@@ -63,4 +65,23 @@ message DeleteRequest {
 
 message DeleteResponse {
   google.protobuf.Empty empty = 1;
+}
+
+message RegisterTelegramUserRequest {
+  int64 telegram_id = 1;
+  string username = 2;
+}
+
+message RegisterTelegramUserResponse {
+  int64 user_id = 1;
+  string token = 2;
+}
+
+message VerifyTokenRequest {
+  string token = 1;
+}
+
+message VerifyTokenResponse {
+  int64 user_id = 1;
+  bool valid = 2;
 }

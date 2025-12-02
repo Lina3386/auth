@@ -10,4 +10,6 @@ type UserService interface {
 	Get(ctx context.Context, id int64) (*model.User, error)
 	Delete(ctx context.Context, id int64) error
 	Update(ctx context.Context, req *model.UserToUpdate) error
+	RegisterTelegramUser(ctx context.Context, telegramID int64, username string) (int64, string, error)
+	VerifyToken(ctx context.Context, token string) (int64, bool, error)
 }

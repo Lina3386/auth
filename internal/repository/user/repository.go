@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	tableName = "user"
+	tableName = "users"
 
 	idColumn        = "id"
 	nameColumn      = "name"
@@ -115,7 +115,7 @@ func (r repo) Update(ctx context.Context, req *model.UserToUpdate) error {
 }
 
 func (r repo) Delete(ctx context.Context, id int64) error {
-	builder := sq.Delete(tableName).PlaceholderFormat(sq.Dollar).Where(sq.Eq{"id": id})
+	builder := sq.Delete(tableName).PlaceholderFormat(sq.Dollar).Where(sq.Eq{idColumn: id})
 	query, args, err := builder.ToSql()
 	if err != nil {
 		return err
@@ -141,4 +141,114 @@ func genPassHash(pass string) string {
 	h := sha256.New()
 	h.Write([]byte(pass))
 	return fmt.Sprintf("%x", h.Sum(nil))
+}
+
+func (r repo) RegisterTelegramUser(ctx context.Context, telegramID int64, username string) (int64, string, error) {
+	// Генерируем токен
+	token := fmt.Sprintf("tg_token_%d_%d", telegramID, time.Now().Unix())
+	
+	// Проверяем, существует ли пользователь
+	existingUser, err := r.GetByTelegramID(ctx, telegramID)
+	if err == nil && existingUser != nil {
+		// Обновляем токен существующего пользователя
+		builder := sq.Update(tableName).
+			PlaceholderFormat(sq.Dollar).
+			Set("telegram_username", username).
+			Set("auth_token", token).
+			Set(updatedAtColumn, time.Now()).
+			Where(sq.Eq{"telegram_id": telegramID}).
+			Suffix("RETURNING id")
+		
+		query, args, err := builder.ToSql()
+		if err != nil {
+			return 0, "", err
+		}
+		
+		q := db.Query{
+			Name:     "user_repository.RegisterTelegramUser_Update",
+			QueryRaw: query,
+		}
+		
+		var id int64
+		err = r.db.DB().QueryRowContext(ctx, q, args...).Scan(&id)
+		if err != nil {
+			return 0, "", err
+		}
+		return id, token, nil
+	}
+	
+	// Создаем нового пользователя
+	builder := sq.Insert(tableName).PlaceholderFormat(sq.Dollar).
+		Columns(nameColumn, emailColumn, passwordColumn, roleColumn, "telegram_id", "telegram_username", "auth_token").
+		Values(username, fmt.Sprintf("tg_%d@telegram.local", telegramID), genPassHash(token), desc.Role_USER, telegramID, username, token).
+		Suffix("RETURNING id")
+	
+	query, args, err := builder.ToSql()
+	if err != nil {
+		return 0, "", err
+	}
+	
+	q := db.Query{
+		Name:     "user_repository.RegisterTelegramUser",
+		QueryRaw: query,
+	}
+	
+	var id int64
+	err = r.db.DB().QueryRowContext(ctx, q, args...).Scan(&id)
+	if err != nil {
+		return 0, "", err
+	}
+	return id, token, nil
+}
+
+func (r repo) GetByTelegramID(ctx context.Context, telegramID int64) (*model.User, error) {
+	builder := sq.Select(idColumn, nameColumn, emailColumn, roleColumn, createdAtColumn, updatedAtColumn).
+		PlaceholderFormat(sq.Dollar).
+		From(tableName).
+		Where(sq.Eq{"telegram_id": telegramID}).
+		Limit(1)
+	
+	query, args, err := builder.ToSql()
+	if err != nil {
+		return nil, err
+	}
+	
+	q := db.Query{
+		Name:     "user_repository.GetByTelegramID",
+		QueryRaw: query,
+	}
+	
+	var user modelRepo.User
+	err = r.db.DB().ScanOneContext(ctx, &user, q, args...)
+	if err != nil {
+		return nil, err
+	}
+	
+	return converter.ToUserFromRepo(&user), nil
+}
+
+func (r repo) VerifyToken(ctx context.Context, token string) (int64, bool, error) {
+	builder := sq.Select(idColumn).
+		PlaceholderFormat(sq.Dollar).
+		From(tableName).
+		Where(sq.Eq{"auth_token": token}).
+		Limit(1)
+	
+	query, args, err := builder.ToSql()
+	if err != nil {
+		return 0, false, err
+	}
+	
+	q := db.Query{
+		Name:     "user_repository.VerifyToken",
+		QueryRaw: query,
+	}
+	
+	var id int64
+	err = r.db.DB().QueryRowContext(ctx, q, args...).Scan(&id)
+	if err != nil {
+		return 0, false, nil // Токен не найден
+	}
+	
+	return id, true, nil
 }
