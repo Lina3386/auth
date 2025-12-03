@@ -144,13 +144,10 @@ func genPassHash(pass string) string {
 }
 
 func (r repo) RegisterTelegramUser(ctx context.Context, telegramID int64, username string) (int64, string, error) {
-	// Генерируем токен
 	token := fmt.Sprintf("tg_token_%d_%d", telegramID, time.Now().Unix())
 	
-	// Проверяем, существует ли пользователь
 	existingUser, err := r.GetByTelegramID(ctx, telegramID)
 	if err == nil && existingUser != nil {
-		// Обновляем токен существующего пользователя
 		builder := sq.Update(tableName).
 			PlaceholderFormat(sq.Dollar).
 			Set("telegram_username", username).
@@ -177,7 +174,6 @@ func (r repo) RegisterTelegramUser(ctx context.Context, telegramID int64, userna
 		return id, token, nil
 	}
 	
-	// Создаем нового пользователя
 	builder := sq.Insert(tableName).PlaceholderFormat(sq.Dollar).
 		Columns(nameColumn, emailColumn, passwordColumn, roleColumn, "telegram_id", "telegram_username", "auth_token").
 		Values(username, fmt.Sprintf("tg_%d@telegram.local", telegramID), genPassHash(token), desc.Role_USER, telegramID, username, token).
