@@ -37,7 +37,7 @@ func (s *ServiceProvider) PGConfig() config.PGConfig {
 	if s.pgCongfig == nil {
 		pgConfig, err := env.NewPGConfig()
 		if err != nil {
-			log.Fatalf("failed to get pg config: #{err.Error()} ")
+			log.Fatalf("failed to get pg config: %v", err)
 		}
 
 		s.pgCongfig = pgConfig
@@ -50,7 +50,7 @@ func (s *ServiceProvider) GRPCConfig() config.GRPCConfig {
 	if s.grpcConfig == nil {
 		grpcConfig, err := env.NewGRPCConfig()
 		if err != nil {
-			log.Fatalf("failed to get grpc config: #{err.Error()} ")
+			log.Fatalf("failed to get grpc config: %v", err)
 		}
 		s.grpcConfig = grpcConfig
 	}
@@ -61,7 +61,7 @@ func (s *ServiceProvider) DBClient(ctx context.Context) db.Client {
 	if s.dbclient == nil {
 		cl, err := pg.New(ctx, s.PGConfig().DSN())
 		if err != nil {
-			log.Fatalf("failed to get db client: #{err.Error()} ")
+			log.Fatalf("failed to get db client: %v", err)
 		}
 		err = cl.DB().Ping(ctx)
 		if err != nil {

@@ -62,8 +62,10 @@ func (a *App) initDeps(ctx context.Context) error {
 }
 
 func (a *App) initConfig(context.Context) error {
-	err := config.Load(".env")
+	flag.Parse()
+	err := config.Load(configPath)
 	if err != nil {
+		log.Printf("Failed to load config from %s: %v", configPath, err)
 		return err
 	}
 	return nil
@@ -82,7 +84,7 @@ func (a *App) initGRPCServer(ctx context.Context) error {
 }
 
 func (a *App) runGRPCServer() error {
-	log.Printf("GRPC server is running on #{a.serviceProvider.GRPCConfig().Address()}")
+	log.Printf("GRPC server is running on %s", a.serviceProvider.GRPCConfig().Address())
 
 	list, err := net.Listen("tcp", a.serviceProvider.GRPCConfig().Address())
 	if err != nil {
